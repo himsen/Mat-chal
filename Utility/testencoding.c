@@ -9,9 +9,9 @@ void printBits(size_t const size, void const * const ptr)
     unsigned char byte;
     int i, j;
 
-    for( i=0; i<size; i++ )
+    for(i = 0; i < size; i++)
     {
-        for( j=7; j>=0; j-- )
+        for(j = 7; j >= 0; j--)
         {
             byte = b[i] & (1<<j);
             byte >>= j;
@@ -28,14 +28,10 @@ int main(int argc, char** argv) {
 	/* h2b test */
 	char* hex = "4a2e432e";
 	int hexlen = 8;
-	int* binlen = (int*) malloc(sizeof(int)*1);
-	unsigned char* bin = (unsigned char*) malloc(sizeof(char) * hexlen);
-	if( !bin ) {
-		printf("Memory allocation failed\n");
-		exit(0);
-	}
+	unsigned char* bin;
+	int* binlen;
 	
-	h2b(hex, hexlen, bin, binlen);
+	h2b(hex, hexlen, &bin, &binlen);
 
 	printBits(*binlen, bin);
 

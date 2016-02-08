@@ -6,10 +6,21 @@
 * Converts hex encoded data (hex)
 * of length hexlen, into binary (bin)
 * of length binlen.
+* Caller has the responsibility of freeing memory.
 */
-void h2b(char* hex, int hexlen, unsigned char* bin, int* binlen) {
+void h2b(char* hex, int hexlen, unsigned char** bin, int** binlen) {
 
-	*binlen = hexlen;	
+	*binlen = (int*) malloc(sizeof(int) * 1);
+	if( !(*binlen) ) {
+		printf( "Memory allocation failed\n" );
+		exit(0);
+	}
+	**binlen = hexlen;	
+	*bin = (unsigned char*) malloc(sizeof(char) * hexlen);
+	if( !(*bin) ) {
+		printf( "Memory allocation failed\n" );
+		exit(0);
+	}
 
 	int i;
 	char temp;
@@ -17,13 +28,13 @@ void h2b(char* hex, int hexlen, unsigned char* bin, int* binlen) {
 		
 		temp = *(hex + i);
 		if( '0' <= temp && temp <= '9' ) {
-			*(bin + i) = temp - '0';
+			*(*bin + i) = temp - '0';
 		}
 		else if( 'A' <= temp && temp <= 'F' ) {
-			*(bin + i) = temp - 'A' + 10;
+			*(*bin + i) = temp - 'A' + 10;
 		}
 		else {
-			*(bin + i) = temp - 'a' + 10;
+			*(*bin + i) = temp - 'a' + 10;
 		}
 	}
 }
