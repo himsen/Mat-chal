@@ -1,34 +1,10 @@
-#include "encoding.h"
+#include "base64.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-
-void printBits(size_t const size, void const * const ptr)
-{
-
-    unsigned char *b = (unsigned char*) ptr;
-    unsigned char byte;
-    int i, j;
-
-    for(i = 0; i < size; i++)
-    {
-        for(j = 7; j >= 0; j--)
-        {
-            byte = b[i] & (1<<j);
-            byte >>= j;
-            printf("%u", byte);
-        }
-    }
-
-    puts("");
-
-}
-
+#include <string.h>	
 
 int main(int argc, char** argv) {
-
-	/* base64_encode test start */
+/* base64_encode test start */
 	
 	//Test vectors from RFC4648.
 	char* test0 = ""; //""
@@ -72,10 +48,6 @@ int main(int argc, char** argv) {
 	char* test_vectors_expres[] = {test0_expres, test1_expres, test2_expres, test3_expres, test4_expres, test5_expres, test6_expres, test_matasano_expres};
 	int test_vectors_explen[] = {test0_explen, test1_explen, test2_explen, test3_explen, test4_explen, test5_explen, test6_explen, test_matasano_explen};
 
-	//Temporary buffers to hold binary conversion.
-	unsigned char* bin;
-	int* binlen;
-
 	//Temporary buffers to hold base64 conversion.
 	char* b64;
 	int* b64len;
@@ -86,8 +58,7 @@ int main(int argc, char** argv) {
 	for(int i = 0; i < 8; i++) {
 
 		//Convert test (hex encoded) string to binary and then base64 encode.
-		h2b( *(test_vectors + i), *(test_vectors_len + i), &bin, &binlen );
-		base64_encode(bin, *binlen, &b64, &b64len);
+		hstring2base64( *(test_vectors + i), *(test_vectors_len + i), &b64, &b64len );
 
 		//Test whether b64 encoding has the expected length.
 		error_flag = (*b64len == *(test_vectors_explen + i)) ? 0 : 1;
@@ -119,8 +90,6 @@ int main(int argc, char** argv) {
 		}
 
 		//Free temporary buffers for next test.
-		free(bin);
-		free(binlen);
 		free(b64);
 		free(b64len);
 
@@ -132,8 +101,6 @@ int main(int argc, char** argv) {
 
 	error:
 		//Remember to free temporary buffers. 
-		free(bin);
-		free(binlen);
 		free(b64);
 		free(b64len);
 
@@ -143,7 +110,6 @@ int main(int argc, char** argv) {
 
 	/* h2b test end */
 
-} 
 
-
-
+}
+	

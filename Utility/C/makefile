@@ -5,6 +5,7 @@ all: testencoding
 
 testencoding: encoding.o testencoding.o
 	$(CC) encoding.o testencoding.o -o testencoding
+	$(CC) -dynamiclib -o libutility.dylib encoding.o
 
 encoding.o: encoding.c
 	$(CC) $(CFLAGS) encoding.c
